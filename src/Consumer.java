@@ -8,19 +8,21 @@ import java.util.logging.Logger;
  */
 public class Consumer extends Thread {
     Buffer buffer;
+    String name;
 
-    public Consumer(Buffer buffer) {
+    public Consumer(Buffer buffer, String name) {
         this.buffer = buffer;
+        this.name = name;
     }
 
     @Override
     public void run() {
         System.out.println("Running consumer... ");
-        char product = 0;
+        String product = "";
         
         while (true) {
-            product = this.buffer.consume();
-            System.out.println("Consumer consumed: " + product);
+            product = this.buffer.consumeQ();
+            System.out.println("Consumer " + this.name + " consumed: " + product);
             
             try {
                 Thread.sleep(1000);

@@ -9,25 +9,27 @@ import java.util.logging.Logger;
  */
 public class Producer extends Thread {
     Buffer buffer;
+    String name;
 
-    public Producer(Buffer buffer) {
+    public Producer(Buffer buffer, String name) {
         this.buffer = buffer;
+        this.name = name;
     }
 
     @Override
     public void run() {
         System.out.println("Running producer... ");
         String products = "AEIOU";
-        Random r = new Random(System.currentTimeMillis());
+        Random r = new Random();
         char product = 0;
         
         while (true) {
             product = products.charAt(r.nextInt(5));
-            this.buffer.produce(product);
-            System.out.println("Producer produced: " + product);
+            this.buffer.produceQ(Character.toString(product) + this.name);
+            System.out.println("Producer " + this.name + " produced: " + product);
             
             try {
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
             }

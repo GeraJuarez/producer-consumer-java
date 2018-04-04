@@ -1,19 +1,50 @@
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.LinkedList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  *
- * @author Zegerd
+ * @author Zegerd & Dragv
  */
 public class Buffer {
-    private char buffer;
+    private BlockingQueue<String> bufferQ;
 
-    public Buffer() {
-        this.buffer = 0;
+    public Buffer(int size) {
+        this.bufferQ = new LinkedBlockingQueue<>(size);
     }
     
-    // synchronized permite que se bloqueen las demas funciones de la clase cuando una de ellas esta ctiva
+    public String consumeQ() {
+        String product = null;
+        try {
+            product = this.bufferQ.take();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //notify();
+        return product;
+    }
+    
+    public void produceQ (String product) {
+        try {
+            this.bufferQ.put(product);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //notify();
+    }
+    
+    
+ /* TODO delete this later */
+    private char buffer; //delete this later
+    public Buffer() {
+        // delete this cosntructor later
+        this.buffer = 0; //delete this later
+    }
+    
+    // synchronized permite que se bloqueen las demas funciones de la clase cuando una de ellas esta activa
     synchronized char consume() {
         char product = 0;
         
@@ -45,6 +76,7 @@ public class Buffer {
         this.buffer = product;
         notify();
     }
+/* TODO delete this from above later */
 }
 
 /*
