@@ -6,6 +6,9 @@ public class ProducerConsumer {
     
     public static void main(String[] args) {
         
+        ConsumerProducerInterface panel = new ConsumerProducerInterface();
+        panel.setVisible(true);
+        
         Buffer buffer = new Buffer(2);
         
         Producer producer = new Producer(buffer, "1");
