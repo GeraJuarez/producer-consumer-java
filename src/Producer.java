@@ -12,9 +12,6 @@ public class Producer extends Thread {
     String name;
     
     // Constant indices for the production of operations
-    final int operatorPos = 1;
-    final int firstNumberPos = 3;
-    final int secondNumberPos = 5;
     final String operations = "+-*/";
 
     public Producer(Buffer buffer, String name) {
@@ -45,7 +42,7 @@ public class Producer extends Thread {
         String prefixOp = "";
         
         /* -- */
-        int NumberRange = 10; // This might be passed by a parameter
+        int NumberRange = 20; // This might be passed by a parameter
         /* -- */
         
         // Init random
@@ -53,17 +50,19 @@ public class Producer extends Thread {
         Random rangeRand = new Random();
         
         // init default operation
-        StringBuilder sb = new StringBuilder("(+ 1 2)");
+        StringBuilder sb = new StringBuilder("(");
         
         // Get random operator and replace
         String tempOperation = Character.toString( operations.charAt(opRand.nextInt(4)) );
-        sb.replace(operatorPos, operatorPos + 1 , tempOperation);
+        sb.append(tempOperation).append(" ");
         
         // Get random number and replace
         String tempNumber = "" + rangeRand.nextInt(NumberRange);
-        sb.replace(firstNumberPos, firstNumberPos + 1, tempNumber);
+        sb.append(tempNumber).append(" ");
         tempNumber = "" + rangeRand.nextInt(NumberRange);
-        sb.replace(secondNumberPos, secondNumberPos + 1, tempNumber);
+        sb.append(tempNumber);
+        
+        sb.append(")");
         
         prefixOp = sb.toString(); 
         return prefixOp;
