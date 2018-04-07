@@ -26,7 +26,7 @@ public class Producer extends Thread {
         
         while (true) {
             product = producePrefixOperation();
-            this.buffer.produceQ(product + " : " + this.name);
+            this.buffer.produceQ(product);
             System.out.println("Producer " + this.name + " produced: " + product);
             
             try {
@@ -50,7 +50,7 @@ public class Producer extends Thread {
         Random rangeRand = new Random();
         
         // init default operation
-        StringBuilder sb = new StringBuilder("(");
+        StringBuilder sb = new StringBuilder("( ");
         
         // Get random operator and replace
         String tempOperation = Character.toString( operations.charAt(opRand.nextInt(4)) );
@@ -62,7 +62,7 @@ public class Producer extends Thread {
         tempNumber = "" + rangeRand.nextInt(NumberRange);
         sb.append(tempNumber);
         
-        sb.append(")");
+        sb.append(" )");
         
         prefixOp = sb.toString(); 
         return prefixOp;
