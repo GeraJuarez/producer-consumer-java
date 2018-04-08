@@ -293,9 +293,6 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
                 consumer.start();
             }
             
-            while(true){
-                System.out.println(queue.peek());
-            }
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(this, "Bad inputs", "Error", JOptionPane.ERROR_MESSAGE);
