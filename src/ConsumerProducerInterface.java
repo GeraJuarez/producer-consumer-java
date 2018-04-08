@@ -289,7 +289,7 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
             }
             
             for(int i = 0; i < cNum; i++){
-                Consumer consumer = new Consumer(buffer, cTime);
+                Consumer consumer = new Consumer(buffer, cTime, jTable2);
                 consumer.start();
             }
             

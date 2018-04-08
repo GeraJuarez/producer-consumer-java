@@ -1,6 +1,8 @@
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -10,23 +12,22 @@ public class Consumer extends Thread {
     Buffer buffer;
     String name;
     int consumeWaitTime;
+    private final DefaultTableModel model;
+    private final JTable table;
     
     // Constant Values for parsing
     private final int operatorPos = 1;
     private final int Num1Pos = 2;
     private final int Num2Pos = 3;
 
-    public Consumer(Buffer buffer, int waitTime) {
+    public Consumer(Buffer buffer, int waitTime, JTable table) {
         this.buffer = buffer;
         this.name = "";
         this.consumeWaitTime = waitTime;
+        this.table = table;
+        this.model =(DefaultTableModel) table.getModel();
     }
-    
-    public Consumer(Buffer buffer, String name) {
-        this.buffer = buffer;
-        this.name = name;
-        this.consumeWaitTime = 1;
-    }
+   
     
     private float parsePrefixOperation(String operation) {
         float result = 0;
@@ -64,7 +65,7 @@ public class Consumer extends Thread {
             product = this.buffer.consumeQ();
             productResult = parsePrefixOperation(product);
             System.out.println("Consumer " + this.name + " consumed: " + product + " = " + productResult);
-            
+            model.addRow(new Object[] { product + " = " + productResult });
             try {
                 Thread.sleep(consumeWaitTime * 1000);
             } catch (InterruptedException ex) {
