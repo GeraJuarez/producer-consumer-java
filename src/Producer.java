@@ -18,6 +18,7 @@ public class Producer extends Thread {
     int range;
     private final DefaultTableModel model;
     private final JTable table;
+    volatile boolean shutdown = false;
     
     // Constant indices for the production of operations
     final String operations = "+-*/";
@@ -38,7 +39,7 @@ public class Producer extends Thread {
         System.out.println("Running producer... ");
         String product;
         
-        while (!Thread.currentThread().isInterrupted()) {
+        while (!shutdown) {
             product = producePrefixOperation();
             this.buffer.produceQ(product);
             System.out.println("Producer " + this.name + " produced: " + product);

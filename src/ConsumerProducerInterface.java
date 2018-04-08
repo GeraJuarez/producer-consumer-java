@@ -293,7 +293,7 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
                 }
 
                 for(int i = 0; i < cNum; i++){
-                    consumers[i] = new Consumer(buffer, cTime, this.jTable2, this.jTable1);
+                    consumers[i] = new Consumer(buffer, cTime, this.jTable2, this.jTable1, this.jSpinner4);
                     consumers[i].start();
                 }
                 this.s = 1;
@@ -306,11 +306,11 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
             this.jButton1.setText("INICIAR");
             
             for(int i = 0; i < this.producers.length; i++){
-                producers[i].interrupt();
+                producers[i].shutdown = true;
             }
 
             for(int i = 0; i < this.consumers.length; i++){
-                consumers[i].interrupt();
+                consumers[i].shutdown = true;
             }
             
             this.s = 0;
