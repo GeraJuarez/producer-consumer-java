@@ -2,6 +2,8 @@
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,25 +16,22 @@ public class Producer extends Thread {
     int minRandNumber;
     int maxRandNumber;
     int range;
+    private final DefaultTableModel model;
+    private final JTable table;
     
     // Constant indices for the production of operations
     final String operations = "+-*/";
 
-        public Producer(Buffer buffer, int waitTime, int min, int max) {
+        public Producer(Buffer buffer, int waitTime, int min, int max, JTable table) {
         this.buffer = buffer;
         this.name = "";
         this.productionWaitTime = waitTime;
         this.minRandNumber = min;
         this.maxRandNumber = max;
+        this.table = table;
+        this.model =(DefaultTableModel) table.getModel();
     }
     
-    public Producer(Buffer buffer, String name) {
-        this.buffer = buffer;
-        this.name = name;
-        this.productionWaitTime = 5;
-        this.minRandNumber = 0;
-        this.maxRandNumber = 20;
-    }
 
     @Override
     public void run() {
@@ -43,7 +42,7 @@ public class Producer extends Thread {
             product = producePrefixOperation();
             this.buffer.produceQ(product);
             System.out.println("Producer " + this.name + " produced: " + product);
-            
+            model.addRow(new Object[] { product });
             try {
                 Thread.sleep(productionWaitTime * 1000);
             } catch (InterruptedException ex) {

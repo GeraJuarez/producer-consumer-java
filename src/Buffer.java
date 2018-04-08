@@ -13,19 +13,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Buffer {
     private BlockingQueue<String> bufferQ;
-    private final DefaultTableModel model;
-    private final JTable table;
 
-    public Buffer(int size, JTable table) {
+
+    public Buffer(int size) {
         this.bufferQ = new LinkedBlockingQueue<>(size);
-        this.table = table;
-        this.model =(DefaultTableModel) table.getModel();
+
     }
     
     public String consumeQ() {
         String product = null;
         try {
-            model.removeRow(0);
             product = this.bufferQ.take();
         } catch (InterruptedException ex) {
             Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
@@ -36,7 +33,6 @@ public class Buffer {
     
     public void produceQ (String product) {
         try {
-            model.addRow(new Object[] { product });
             this.bufferQ.put(product);
         } catch (InterruptedException ex) {
             Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);

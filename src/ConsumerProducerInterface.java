@@ -139,10 +139,7 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
                 "Operaciones"
@@ -152,10 +149,7 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
                 "Resultado"
@@ -279,17 +273,17 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
             System.out.println(maxg);
             
             
-            Buffer buffer = new Buffer(buff, this.jTable1);
+            Buffer buffer = new Buffer(buff);
             
             BlockingQueue<String> queue = buffer.getQueue();
             
             for(int i = 0; i < pNum; i++){
-                Producer producer = new Producer(buffer, pTime, ming, maxg);
+                Producer producer = new Producer(buffer, pTime, ming, maxg, this.jTable1);
                 producer.start();
             }
             
             for(int i = 0; i < cNum; i++){
-                Consumer consumer = new Consumer(buffer, cTime, jTable2);
+                Consumer consumer = new Consumer(buffer, cTime, this.jTable2, this.jTable1);
                 consumer.start();
             }
             
