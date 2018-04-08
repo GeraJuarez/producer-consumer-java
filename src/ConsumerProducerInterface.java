@@ -139,26 +139,26 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null},
+                {null},
+                {null},
+                {null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Operaciones"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null},
+                {null},
+                {null},
+                {null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Resultado"
             }
         ));
         jScrollPane2.setViewportView(jTable2);
@@ -279,7 +279,7 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
             System.out.println(maxg);
             
             
-            Buffer buffer = new Buffer(buff);
+            Buffer buffer = new Buffer(buff, this.jTable1);
             
             BlockingQueue<String> queue = buffer.getQueue();
             

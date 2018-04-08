@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -12,10 +13,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Buffer {
     private BlockingQueue<String> bufferQ;
-    //private final DefaultTableModel model;
+    private final DefaultTableModel model;
+    private final JTable table;
 
-    public Buffer(int size) {
+    public Buffer(int size, JTable table) {
         this.bufferQ = new LinkedBlockingQueue<>(size);
+        this.table = table;
+        this.model =(DefaultTableModel) table.getModel();
     }
     
     public String consumeQ() {
@@ -31,10 +35,12 @@ public class Buffer {
     
     public void produceQ (String product) {
         try {
+            model.addRow(new Object[] { product, "Column 2" });
             this.bufferQ.put(product);
         } catch (InterruptedException ex) {
             Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         //notify();
     }
     
@@ -42,45 +48,6 @@ public class Buffer {
         return this.bufferQ;
     }
     
- /* TODO delete this later */
-    private char buffer; //delete this later
-    public Buffer() {
-        // delete this cosntructor later
-        this.buffer = 0; //delete this later
-    }
-    
-    // synchronized permite que se bloqueen las demas funciones de la clase cuando una de ellas esta activa
-    synchronized char consume() {
-        char product = 0;
-        
-        if (product == 0) {
-            try {
-                wait(100);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
-        product = this.buffer;
-        this.buffer = 0;
-        // notify() desperta el primer hilo que utilizo el metodo wait()
-        // notifyAll() despierta todos los hilos en wait() de esta clase
-        notify();
-        
-        return product;
-    }
-    
-    synchronized void produce(char product) {
-        if (this.buffer != 0) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        this.buffer = product;
-        notify();
-    }
 /* TODO delete this from above later */
 }
 
