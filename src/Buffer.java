@@ -36,6 +36,9 @@ public class Buffer {
         //notify();
     }
     
+    public BlockingQueue<String> getQueue (){
+        return this.bufferQ;
+    }
     
  /* TODO delete this later */
     private char buffer; //delete this later
