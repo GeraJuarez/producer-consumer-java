@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -11,6 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Buffer {
     private BlockingQueue<String> bufferQ;
+    //private final DefaultTableModel model;
 
     public Buffer(int size) {
         this.bufferQ = new LinkedBlockingQueue<>(size);
@@ -36,6 +38,9 @@ public class Buffer {
         //notify();
     }
     
+    public BlockingQueue<String> getQueue (){
+        return this.bufferQ;
+    }
     
  /* TODO delete this later */
     private char buffer; //delete this later
