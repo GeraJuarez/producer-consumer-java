@@ -9,15 +9,23 @@ import java.util.logging.Logger;
 public class Consumer extends Thread {
     Buffer buffer;
     String name;
+    int consumeWaitTime;
     
     // Constant Values for parsing
     private final int operatorPos = 1;
     private final int Num1Pos = 2;
     private final int Num2Pos = 3;
 
+    public Consumer(Buffer buffer, int waitTime) {
+        this.buffer = buffer;
+        this.name = "";
+        this.consumeWaitTime = waitTime;
+    }
+    
     public Consumer(Buffer buffer, String name) {
         this.buffer = buffer;
         this.name = name;
+        this.consumeWaitTime = 1;
     }
     
     private float parsePrefixOperation(String operation) {
@@ -58,7 +66,7 @@ public class Consumer extends Thread {
             System.out.println("Consumer " + this.name + " consumed: " + product + " = " + productResult);
             
             try {
-                Thread.sleep(1000);
+                Thread.sleep(consumeWaitTime * 1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Consumer.class.getName()).log(Level.SEVERE, null, ex);
             }
