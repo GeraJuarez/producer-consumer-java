@@ -282,7 +282,7 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
                 
                 this.jButton1.setText("PARAR");
 
-                this.buffer = new Buffer(buff);
+                this.buffer = new Buffer(buff, this.jProgressBar1);
                 
                 this.producers = new Producer[pNum];
                 this.consumers = new Consumer[cNum];
