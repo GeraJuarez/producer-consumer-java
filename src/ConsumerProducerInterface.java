@@ -13,10 +13,15 @@ import javax.swing.JOptionPane;
  * @author Drag
  */
 public class ConsumerProducerInterface extends javax.swing.JFrame {
-
+    public int s = 0; 
+    Producer[] producers;
+    Consumer[] consumers;
+    BlockingQueue<String> queue;
+    Buffer buffer;
     /**
      * Creates new form ConsumerProducerInterface
      */
+    
     public ConsumerProducerInterface() {
         initComponents();
     }
@@ -163,6 +168,8 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
 
         jProgressBar1.setValue(50);
 
+        jSpinner4.setEnabled(false);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -195,7 +202,7 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -236,7 +243,7 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(doneSon)
                 .addGap(18, 18, 18)
                 .addComponent(toDo)
@@ -247,50 +254,66 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        System.out.println(this.bufferSize.getText());
+        if(s == 0){
+            System.out.println(this.bufferSize.getText());
             System.out.println(this.consumerNum.getValue());
             System.out.println(this.consumerTime.getText());
             System.out.println(this.prodNumber.getValue());
             System.out.println(this.prodTime.getText());
             System.out.println(this.min.getText());
             System.out.println(this.max.getValue());
-        
-        try{
-            int buff = Integer.parseInt(this.bufferSize.getText());
-            int cNum = (int) this.consumerNum.getValue();
-            int cTime = Integer.parseInt(this.consumerTime.getText());
-            int pNum = (int) this.prodNumber.getValue();
-            int pTime = Integer.parseInt(this.prodTime.getText());
-            int ming = Integer.parseInt(this.min.getText());
-            int maxg = (int) this.max.getValue();
+
+            try{
+                int buff = Integer.parseInt(this.bufferSize.getText());
+                int cNum = (int) this.consumerNum.getValue();
+                int cTime = Integer.parseInt(this.consumerTime.getText());
+                int pNum = (int) this.prodNumber.getValue();
+                int pTime = Integer.parseInt(this.prodTime.getText());
+                int ming = Integer.parseInt(this.min.getText());
+                int maxg = (int) this.max.getValue();
+
+                System.out.println(buff);
+                System.out.println(cNum);
+                System.out.println(cTime);
+                System.out.println(pNum);
+                System.out.println(pTime);
+                System.out.println(ming);
+                System.out.println(maxg);
+                
+                this.jButton1.setText("PARAR");
+
+                this.buffer = new Buffer(buff);
+                
+                this.producers = new Producer[pNum];
+                this.consumers = new Consumer[cNum];
+
+                for(int i = 0; i < pNum; i++){
+                    producers[i] = new Producer(buffer, pTime, ming, maxg, this.jTable1);
+                    producers[i].start();
+                }
+
+                for(int i = 0; i < cNum; i++){
+                    consumers[i] = new Consumer(buffer, cTime, this.jTable2, this.jTable1);
+                    consumers[i].start();
+                }
+                this.s = 1;
+            }
+            catch(Exception e){
+                JOptionPane.showMessageDialog(this, "Bad inputs", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } else {
+            this.jButton1.setText("INICIAR");
             
-            System.out.println(buff);
-            System.out.println(cNum);
-            System.out.println(cTime);
-            System.out.println(pNum);
-            System.out.println(pTime);
-            System.out.println(ming);
-            System.out.println(maxg);
-            
-            
-            Buffer buffer = new Buffer(buff);
-            
-            BlockingQueue<String> queue = buffer.getQueue();
-            
-            for(int i = 0; i < pNum; i++){
-                Producer producer = new Producer(buffer, pTime, ming, maxg, this.jTable1);
-                producer.start();
+            for(int i = 0; i < this.producers.length; i++){
+                producers[i].interrupt();
+            }
+
+            for(int i = 0; i < this.consumers.length; i++){
+                consumers[i].interrupt();
             }
             
-            for(int i = 0; i < cNum; i++){
-                Consumer consumer = new Consumer(buffer, cTime, this.jTable2, this.jTable1);
-                consumer.start();
-            }
-            
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Bad inputs", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            this.s = 0;
         }
         
     }//GEN-LAST:event_jButton1MouseClicked

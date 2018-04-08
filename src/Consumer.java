@@ -65,16 +65,18 @@ public class Consumer extends Thread {
         String product = "";
         float productResult = 0;
         
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             product = this.buffer.consumeQ();
             productResult = parsePrefixOperation(product);
             System.out.println("Consumer " + this.name + " consumed: " + product + " = " + productResult);
             model.addRow(new Object[] { product + " = " + productResult });
-            //model1.removeRow(0);
+            model1.removeRow(0);
             try {
                 Thread.sleep(consumeWaitTime * 1000);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Consumer.class.getName()).log(Level.SEVERE, null, ex);
+                Thread.currentThread().interrupt();
+                //Logger.getLogger(Consumer.class.getName()).log(Level.SEVERE, null, ex);
+                return;
             }
         }
     }

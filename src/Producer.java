@@ -38,7 +38,7 @@ public class Producer extends Thread {
         System.out.println("Running producer... ");
         String product;
         
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             product = producePrefixOperation();
             this.buffer.produceQ(product);
             System.out.println("Producer " + this.name + " produced: " + product);
@@ -46,7 +46,9 @@ public class Producer extends Thread {
             try {
                 Thread.sleep(productionWaitTime * 1000);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
+                Thread.currentThread().interrupt();
+                //Logger.getLogger(Consumer.class.getName()).log(Level.SEVERE, null, ex);
+                return;
             }
         }
     }
