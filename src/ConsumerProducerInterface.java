@@ -284,12 +284,12 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
             BlockingQueue<String> queue = buffer.getQueue();
             
             for(int i = 0; i < pNum; i++){
-                Producer producer = new Producer(buffer, Integer.toString(i));
+                Producer producer = new Producer(buffer, pTime, ming, maxg);
                 producer.start();
             }
             
             for(int i = 0; i < cNum; i++){
-                Consumer consumer = new Consumer(buffer, Integer.toString(i));
+                Consumer consumer = new Consumer(buffer, cTime);
                 consumer.start();
             }
             

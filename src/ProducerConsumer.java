@@ -9,7 +9,7 @@ public class ProducerConsumer {
         ConsumerProducerInterface panel = new ConsumerProducerInterface();
         panel.setVisible(true);
         
-        //Buffer buffer = new Buffer(2);
+        Buffer buffer = new Buffer(2);
         
         //Producer producer = new Producer(buffer, "1");
         Producer producer = new Producer(buffer, 5, 10, 15);

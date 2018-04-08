@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Buffer {
     private BlockingQueue<String> bufferQ;
-    private final DefaultTableModel model;
+    //private final DefaultTableModel model;
 
     public Buffer(int size) {
         this.bufferQ = new LinkedBlockingQueue<>(size);
