@@ -44,7 +44,8 @@ public class Producer extends Thread {
                 product = producePrefixOperation();
                 this.buffer.produceQ(product);
                 //System.out.println("Producer " + this.name + " produced: " + product);
-                model.addRow(new Object[] { product });
+                this.buffer.addRowProducer(new Object[] { product }, model, true);
+                //model.addRow(new Object[] { product });
                 try {
                     Thread.sleep(productionWaitTime * 1000);
                 } catch (InterruptedException ex) {

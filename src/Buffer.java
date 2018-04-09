@@ -56,4 +56,18 @@ public class Buffer {
     public BlockingQueue<String> getQueue (){
         return this.bufferQ;
     }
+    
+    synchronized void addRowProducer(Object[] row, DefaultTableModel tableProd, boolean add){
+        if (add) {
+            tableProd.addRow(row);
+        } else {
+            tableProd.removeRow(0);
+        }
+        
+    }
+    
+    synchronized void  addRowConsumer(Object[] row, DefaultTableModel tableCons, DefaultTableModel tableProd) {
+        tableCons.addRow(row);
+        addRowProducer(row, tableProd, false);
+    }
 }

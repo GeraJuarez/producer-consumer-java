@@ -74,8 +74,9 @@ public class Consumer extends Thread {
                 product = this.buffer.consumeQ();
                 productResult = parsePrefixOperation(product);
                 //System.out.println("Consumer " + this.name + " consumed: " + product + " = " + productResult);
-                model.addRow(new Object[] { product + " = " + productResult });
-                model1.removeRow(0);
+                this.buffer.addRowConsumer(new Object[] { product + " = " + productResult }, model, model1);
+                //model.addRow(new Object[] { product + " = " + productResult });
+                //model1.removeRow(0);
                 spinner.setValue( (int) (spinner.getValue()) + 1);
                 try {
                     Thread.sleep(consumeWaitTime * 1000);
