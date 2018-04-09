@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.JProgressBar;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -61,13 +62,14 @@ public class Buffer {
         if (add) {
             tableProd.addRow(row);
         } else {
-            tableProd.removeRow(0);
+            if ( (tableProd.getRowCount() > 0) )
+                tableProd.removeRow(0);
         }
         
     }
     
-    synchronized void  addRowConsumer(Object[] row, DefaultTableModel tableCons, DefaultTableModel tableProd) {
+    synchronized void  addRowConsumer(Object[] row, DefaultTableModel tableCons, JSpinner spinner) {
         tableCons.addRow(row);
-        addRowProducer(row, tableProd, false);
+        spinner.setValue( (int) spinner.getValue() + 1);
     }
 }

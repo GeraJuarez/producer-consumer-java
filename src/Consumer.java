@@ -74,10 +74,13 @@ public class Consumer extends Thread {
                 product = this.buffer.consumeQ();
                 productResult = parsePrefixOperation(product);
                 //System.out.println("Consumer " + this.name + " consumed: " + product + " = " + productResult);
-                this.buffer.addRowConsumer(new Object[] { product + " = " + productResult }, model, model1);
+                
+                this.buffer.addRowProducer(new Object[] { null }, model1, false);
+                this.buffer.addRowConsumer(new Object[] { product + " = " + productResult }, model, spinner);
+                
                 //model.addRow(new Object[] { product + " = " + productResult });
                 //model1.removeRow(0);
-                spinner.setValue( (int) (spinner.getValue()) + 1);
+                //spinner.setValue( (int) (spinner.getValue()) + 1);
                 try {
                     Thread.sleep(consumeWaitTime * 1000);
                 } catch (InterruptedException ex) {

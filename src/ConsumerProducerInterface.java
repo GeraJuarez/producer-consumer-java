@@ -1,6 +1,7 @@
 
 import java.util.concurrent.BlockingQueue;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -339,6 +340,8 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
             */
             this.jButton1.setText("PARAR");
 
+            DefaultTableModel m1 = (DefaultTableModel) jTable1.getModel();
+            
             this.buffer = new Buffer(buff, this.jProgressBar1);
 
             this.producers = new Producer[pNum];
