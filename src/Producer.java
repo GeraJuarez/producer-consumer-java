@@ -36,20 +36,22 @@ public class Producer extends Thread {
 
     @Override
     public void run() {
-        System.out.println("Running producer... ");
+        //System.out.println("Running producer... ");
         String product;
         
-        while (!shutdown) {
-            product = producePrefixOperation();
-            this.buffer.produceQ(product);
-            System.out.println("Producer " + this.name + " produced: " + product);
-            model.addRow(new Object[] { product });
-            try {
-                Thread.sleep(productionWaitTime * 1000);
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-                //Logger.getLogger(Consumer.class.getName()).log(Level.SEVERE, null, ex);
-                return;
+        while (true) {
+            if (!shutdown) {
+                product = producePrefixOperation();
+                this.buffer.produceQ(product);
+                //System.out.println("Producer " + this.name + " produced: " + product);
+                model.addRow(new Object[] { product });
+                try {
+                    Thread.sleep(productionWaitTime * 1000);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                    //Logger.getLogger(Consumer.class.getName()).log(Level.SEVERE, null, ex);
+                    return;
+                }
             }
         }
     }

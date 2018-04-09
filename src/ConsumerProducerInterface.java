@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class ConsumerProducerInterface extends javax.swing.JFrame {
     public int s = 0; 
+    private boolean hasStarted = false;
     Producer[] producers;
     Consumer[] consumers;
     BlockingQueue<String> queue;
@@ -39,11 +40,7 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
         doneSon = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        prodTime = new javax.swing.JTextField();
-        consumerTime = new javax.swing.JTextField();
-        bufferSize = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        min = new javax.swing.JTextField();
         max = new javax.swing.JSpinner();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -51,6 +48,10 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
         consumerNum = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        prodTime = new javax.swing.JSpinner();
+        consumerTime = new javax.swing.JSpinner();
+        bufferSize = new javax.swing.JSpinner();
+        min = new javax.swing.JSpinner();
         jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -64,17 +65,31 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel5.setText("Tiempo de Espera (ms)");
+        jLabel5.setText("Tiempo de Espera (s)");
 
         jLabel6.setText("Rango de Valores (n, m)");
+
+        max.setModel(new javax.swing.SpinnerNumberModel(1, 0, null, 1));
 
         jLabel1.setText("Productores");
 
         jLabel2.setText("Consumidores");
 
+        prodNumber.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
+        consumerNum.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
         jLabel3.setText("Tamaño del Buffer");
 
         jLabel4.setText("Cantidad");
+
+        prodTime.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
+        consumerTime.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
+        bufferSize.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
+        min.setModel(new javax.swing.SpinnerNumberModel());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -91,16 +106,16 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(consumerNum)
-                    .addComponent(bufferSize)
                     .addComponent(prodNumber)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(min, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                    .addComponent(bufferSize)
+                    .addComponent(min))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(max, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(prodTime)
-                    .addComponent(consumerTime)
-                    .addComponent(max, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(consumerTime))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -121,15 +136,15 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(consumerNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(consumerTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(bufferSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(min, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(max, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(max, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(min, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -254,54 +269,23 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        if (!hasStarted) {
+            initProducerConsumer();
+        }
+        
         if(s == 0){
-            System.out.println(this.bufferSize.getText());
-            System.out.println(this.consumerNum.getValue());
-            System.out.println(this.consumerTime.getText());
-            System.out.println(this.prodNumber.getValue());
-            System.out.println(this.prodTime.getText());
-            System.out.println(this.min.getText());
-            System.out.println(this.max.getValue());
-
-            try{
-                int buff = Integer.parseInt(this.bufferSize.getText());
-                int cNum = (int) this.consumerNum.getValue();
-                int cTime = Integer.parseInt(this.consumerTime.getText());
-                int pNum = (int) this.prodNumber.getValue();
-                int pTime = Integer.parseInt(this.prodTime.getText());
-                int ming = Integer.parseInt(this.min.getText());
-                int maxg = (int) this.max.getValue();
-
-                System.out.println(buff);
-                System.out.println(cNum);
-                System.out.println(cTime);
-                System.out.println(pNum);
-                System.out.println(pTime);
-                System.out.println(ming);
-                System.out.println(maxg);
-                
-                this.jButton1.setText("PARAR");
-
-                this.buffer = new Buffer(buff, this.jProgressBar1);
-                
-                this.producers = new Producer[pNum];
-                this.consumers = new Consumer[cNum];
-
-                for(int i = 0; i < pNum; i++){
-                    producers[i] = new Producer(buffer, pTime, ming, maxg, this.jTable1);
-                    producers[i].start();
-                }
-
-                for(int i = 0; i < cNum; i++){
-                    consumers[i] = new Consumer(buffer, cTime, this.jTable2, this.jTable1, this.jSpinner4);
-                    consumers[i].start();
-                }
-                this.s = 1;
+            this.jButton1.setText("PARAR");
+            
+            for(int i = 0; i < this.producers.length; i++){
+                producers[i].shutdown = false;
             }
-            catch(Exception e){
-                JOptionPane.showMessageDialog(this, "Bad inputs", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
+
+            for(int i = 0; i < this.consumers.length; i++){
+                consumers[i].shutdown = false;
             }
+            
+            this.s = 1;
+
         } else {
             this.jButton1.setText("INICIAR");
             
@@ -318,6 +302,57 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1MouseClicked
 
+    private void initProducerConsumer() {
+        /*
+        System.out.println(this.bufferSize.getText());
+        System.out.println(this.consumerNum.getValue());
+        System.out.println(this.consumerTime.getText());
+        System.out.println(this.prodNumber.getValue());
+        System.out.println(this.prodTime.getText());
+        System.out.println(this.min.getText());
+        System.out.println(this.max.getValue());
+        */
+        try{
+            int buff = (int) this.bufferSize.getValue();
+            int cNum = (int) this.consumerNum.getValue();
+            int cTime = (int) this.consumerTime.getValue();
+            int pNum = (int) this.prodNumber.getValue();
+            int pTime = (int) this.prodTime.getValue();
+            int ming = (int) this.min.getValue();
+            int maxg = (int) this.max.getValue();
+            /*        
+            System.out.println(buff);
+            System.out.println(cNum);
+            System.out.println(cTime);
+            System.out.println(pNum);
+            System.out.println(pTime);
+            System.out.println(ming);
+            System.out.println(maxg);
+            */
+            this.jButton1.setText("PARAR");
+
+            this.buffer = new Buffer(buff, this.jProgressBar1);
+
+            this.producers = new Producer[pNum];
+            this.consumers = new Consumer[cNum];
+
+            for(int i = 0; i < pNum; i++){
+                producers[i] = new Producer(buffer, pTime, ming, maxg, this.jTable1);
+                producers[i].start();
+            }
+
+            for(int i = 0; i < cNum; i++){
+                consumers[i] = new Consumer(buffer, cTime, this.jTable2, this.jTable1, this.jSpinner4);
+                consumers[i].start();
+            }
+            //this.s = 1;
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Bad inputs", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        this.hasStarted = true;
+    }
     /**
      * @param args the command line arguments
      */
@@ -354,9 +389,9 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField bufferSize;
+    private javax.swing.JSpinner bufferSize;
     private javax.swing.JSpinner consumerNum;
-    private javax.swing.JTextField consumerTime;
+    private javax.swing.JSpinner consumerTime;
     private javax.swing.JLabel doneSon;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -376,9 +411,9 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JSpinner max;
-    private javax.swing.JTextField min;
+    private javax.swing.JSpinner min;
     private javax.swing.JSpinner prodNumber;
-    private javax.swing.JTextField prodTime;
+    private javax.swing.JSpinner prodTime;
     private javax.swing.JLabel toDo;
     // End of variables declaration//GEN-END:variables
 }
