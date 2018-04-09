@@ -23,7 +23,7 @@ public class Buffer {
         this.progress = progress;
         //this.progress.setMaximum(size);
         //this.progress.setMinimum(size);
-        this.progress.setValue((this.bufferQ.remainingCapacity()/size)*100);
+        this.progress.setValue(0);
         this.progress.setStringPainted(true);
     }
     
@@ -32,7 +32,7 @@ public class Buffer {
         try {
             product = this.bufferQ.take();
             //System.out.println(this.bufferQ.size());
-            this.progress.setValue((this.bufferQ.remainingCapacity()/this.size)*100);
+            this.progress.setValue( (this.bufferQ.remainingCapacity()*100) / this.size );
           
         } catch (InterruptedException ex) {
             Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
@@ -45,7 +45,7 @@ public class Buffer {
         try {
             this.bufferQ.put(product);
             //System.out.println(this.bufferQ.size());
-            this.progress.setValue((this.bufferQ.remainingCapacity()/this.size)*100);
+            this.progress.setValue( (this.bufferQ.remainingCapacity()*100) / this.size );
         } catch (InterruptedException ex) {
             Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
         }
