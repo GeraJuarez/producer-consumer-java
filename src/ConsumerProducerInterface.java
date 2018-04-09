@@ -320,6 +320,14 @@ public class ConsumerProducerInterface extends javax.swing.JFrame {
             int pTime = (int) this.prodTime.getValue();
             int ming = (int) this.min.getValue();
             int maxg = (int) this.max.getValue();
+            //
+            this.bufferSize.setEnabled(false);
+            this.consumerNum.setEnabled(false);
+            this.consumerTime.setEnabled(false);
+            this.prodNumber.setEnabled(false);
+            this.prodTime.setEnabled(false);
+            this.min.setEnabled(false);
+            this.max.setEnabled(false);
             /*        
             System.out.println(buff);
             System.out.println(cNum);
